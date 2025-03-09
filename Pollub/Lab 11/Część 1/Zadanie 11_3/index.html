@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koszyk produktów</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Formularz produktu</h2>
+    <form id="productForm">
+        <label>Nazwa produktu: <input type="text" id="nazwa" required /></label><br>
+        <label>Cena: <input type="number" id="cena" required /></label><br>
+        <label>Kolor: <input type="text" id="kolor" required /></label><br>
+        <label>Liczba sztuk: <input type="number" id="liczba" required></label><br>
+
+        <button type="button" onclick="zapiszDoKoszyka()">Zapisz produkt do koszyka</button>
+        <button type="button" onclick="wyswietlKoszyk()">Wyświetl koszyk</button>
+        <button type="button" onclick="usunDaneZKoszyka()">Usuń wszystkie produkty</button>
+    </form>
+    
+    <h2>Koszyk</h2>
+    <div id="koszyk"></div>
+    
+    <script>
+        function zapiszDoKoszyka() {
+            var product = {
+                nazwa: document.getElementById("nazwa").value,
+                cena: document.getElementById("cena").value,
+                kolor: document.getElementById("kolor").value,
+                liczba: document.getElementById("liczba").value
+            };
+            
+            var koszyk = JSON.parse(localStorage.getItem("koszyk")) || [];
+            koszyk.push(product);
+            localStorage.setItem("koszyk", JSON.stringify(koszyk));
+            alert("Produkt zapisany do koszyka!");
+        }
+        
+        function wyswietlKoszyk() {
+            var koszyk = JSON.parse(localStorage.getItem("koszyk")) || [];
+            var koszykDiv = document.getElementById("koszyk");
+            koszykDiv.innerHTML = "";
+            
+            if (koszyk.length === 0) {
+                koszykDiv.innerHTML = "Koszyk jest pusty.";
+                return;
+            }
+            
+            var table = '<table><tr><th>Nazwa</th><th>Cena</th><th>Kolor</th><th>Liczba sztuk</th></tr>';
+            
+            koszyk.forEach((item) => {
+                table += `<tr>
+                            <td>${item.nazwa}</td>
+                            <td>${item.cena}</td>
+                            <td>${item.kolor}</td>
+                            <td>${item.liczba}</td>
+                          </tr>`;
+            });
+            
+            table += '</table>';
+            koszykDiv.innerHTML = table;
+        }
+        
+        function usunDaneZKoszyka() {
+            localStorage.removeItem("koszyk");
+            wyswietlKoszyk();
+            alert("Wszystkie produkty zostały usunięte.");
+        }
+    </script>
+</body>
+</html>

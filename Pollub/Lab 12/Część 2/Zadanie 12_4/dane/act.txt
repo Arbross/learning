@@ -1,0 +1,7 @@
+<h2>Aktualności</h2>
+<p>Witaj w sekcji aktualności! Tutaj znajdziesz najnowsze informacje i wydarzenia.</p>
+<ul>
+    <li>Nowa wersja naszej aplikacji już dostępna!</li>
+    <li>Zapraszamy na webinar o AJAX – już w przyszłym tygodniu.</li>
+    <li>Nowy dział wsparcia technicznego uruchomiony.</li>
+</ul>

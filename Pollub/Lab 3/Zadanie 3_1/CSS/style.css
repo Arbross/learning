@@ -1,0 +1,41 @@
+/* formatowanie znacznika body:*/
+body {
+    background: #4ae;
+    color:#000040;
+}
+
+/* formatowanie znaczników h1, h2 i elementu o identyfikatorze stopka:*/
+h1, h2, #stopka {
+    background: #000040;
+    color: #8080ff;
+    text-align: center;
+}
+
+/* umieszczenie stopki poniżej elementów z float */
+#stopka {
+    clear: both;
+    width: 100%;
+    padding: 5px 0 5px 0;
+    text-align:center;
+}
+
+/*f ormatowanie elementu o id="tresc": */
+#menu {
+    float: left;
+    width: 20%;
+    padding: 2%;
+    background-color: #ffffff;
+}
+
+/* formatowanie elementu o id="menu": */
+#tresc {
+    float: right;
+    width: 70%;
+    padding: 2%;
+    background-color: lightblue;
+}
+
+/* tło kontenera */
+#kontener {
+    background-color: white;
+}

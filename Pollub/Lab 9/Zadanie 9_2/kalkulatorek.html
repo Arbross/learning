@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulatorek</title>
+    <script src="JS/funkcje.js"></script>
+</head>
+<body>
+    <fieldset style="display: flex; gap: 30px;">
+        <legend>Kalkulatorek</legend>
+        <div>
+            <p><b>Wpisz liczby:</b></p>
+            X: <br>
+            <input type="text" id="X" name="X"/> <br>
+            Y: <br>
+            <input type="text" id="Y" name="Y"/> <br>
+            <button onclick="oblicz()" style="margin-top: 5px;">Oblicz</button>
+        </div>
+        <div>
+            <p><b>Wskaz działanie:</b></p>
+            <input type="radio" name="operator" value="+"/> + <br>
+            <input type="radio" name="operator" value="-"/> - <br>
+            <input type="radio" name="operator" value="*"/> * <br>
+            <input type="radio" name="operator" value="/"/> / <br>
+
+            Wynik: <input type="text" name="wynik" id="wynik" disabled/>
+        </div>
+    </fieldset>
+</body>
+</html>

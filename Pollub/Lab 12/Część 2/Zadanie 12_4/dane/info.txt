@@ -1,0 +1,15 @@
+<h2>O stronie</h2>
+<p>
+  <b>AJAX </b> (Asynchronous JavaScript and XML) - akronim: A -
+  "asynchroniczny", JA - "JavaScript", X - "XML", pozwala na wysyłanie
+  żądań HTTP do serwera bez odświeżania okna przeglądarki
+  (asynchronicznie). <br /> <br />
+  Obiekt <b>XMLHttpRequest (XHR)</b> najważniejszy składnik AJAX, który służy do
+  nawiązywania dynamicznych połączeń XHR, eliminuje potrzebę oczekiwania
+  po każdym żądaniu na przysłanie przez serwer nowej strony i pozwala
+  użytkownikom kontynuować interakcję ze stroną WWW (podczas gdy żądanie
+  jest przetwarzane w tle). Metody GET i POST obiektu XHR działają jak w
+  standardowym żądaniu HTTP. Najczęściej stosowanymi formatami odpowiedzi
+  HTTP jest JSON. <br /><br /><b>Fetch API</b> to nowszy zamiennik XHR (nie
+  działa na starszych przeglądarkach).
+</p>

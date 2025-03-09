@@ -1,0 +1,1 @@
+Nie działa NetBeans MacOS

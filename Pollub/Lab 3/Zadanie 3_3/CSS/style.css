@@ -1,0 +1,85 @@
+body {
+    background: white;
+    color:#000040;
+}
+
+h1, h2, #stopka {
+    background: navy;
+    color: white;
+    text-align: center;
+}
+
+#stopka {
+    clear: both;
+    width: 100%;
+    padding: 5px 0 5px 0;
+    text-align:center;
+}
+
+#menu {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: #ffffff;
+    border-bottom:2px solid #0000a0;
+}
+
+#menu li {
+    float: left;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    padding-right: 3px;
+    font-family: "Lucida Grande", sans-serif;
+    font-size: 85%;
+}
+
+#menu a {
+    float: left;
+    display: block;
+    margin: 0;
+    padding: 4px 8px;
+    color:#ffffd7;
+    text-decoration: none;
+    border: 1px solid #0000c6;
+    border-bottom: none;
+    background:#0000a0;
+}
+
+#menu a:hover {
+    background:#0000d5;
+    color:#ffffff;
+    text-decoration: none;
+}
+
+#tresc {
+    float: left;
+    width: 75%;
+    padding: 1%;
+    background-color: lightblue;
+}
+
+#pasek {
+    float: right;
+    width: 20%;
+    padding: 1%;
+}
+
+#kontener {
+    background-color: white;
+    width: 90%;
+    margin-inline: auto;
+}
+
+*.box { 
+    background:#0000a0;
+    color:#dbffff;
+    padding: 5px;
+    margin: 5px;
+    font-size: 90%;
+}
+
+*.box a {
+    color:#ffffb0;
+}

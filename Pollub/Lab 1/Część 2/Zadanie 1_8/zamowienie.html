@@ -1,0 +1,52 @@
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreator pizzy</title>
+</head>
+<body>
+    <h1>Kreator pizzy</h1>
+    <form action="mailto:s101746@pollub.edu.pl" method="post">
+        <fieldset>
+            <legend>Rozmiar:</legend>
+            <input type="radio" name="small" id="small"> Mała
+            <input type="radio" name="middle" id="middle"> Średnia
+            <input type="radio" name="large" id="large"> Duza
+        </fieldset>
+        <fieldset>
+            <legend>Dodatki:</legend>
+            <input type="checkbox" name="ham" id="ham" /> Szynka <br/>
+            <input type="checkbox" name="salami" id="salami" /> Salami <br/>
+            <input type="checkbox" name="bacon" id="bacon" /> Boczek <br/>
+            <input type="checkbox" name="paprika" id="paprika" /> Papryka <br/>
+            <input type="checkbox" name="tomato" id="tomato" /> Pomidor <br/>
+            <input type="checkbox" name="cheese" id="cheese" /> Ser
+        </fieldset>
+        <fieldset>
+            <legend>Sosy:</legend>
+            <table>
+                <tr>
+                    <td>Wybierz sos:</td>
+                    <td>
+                        <select name="saucetype" id="saucetype" multiple>
+                            <option value="tomatosauce">Pomidorowy</option>
+                            <option value="garlicsauce">Czosnkowy</option>
+                            <option value="softketchupsauce">Ketczup łagodny</option>
+                            <option value="fireketchupsauce">Ketczup pikantny</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Inne uwagi:</td>
+                    <td>
+                        <textarea name="attentions" id="attentions" rows="5" cols="70"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+        <br/>
+        <input type="reset" value="Wyczyść dane">
+        <input type="submit" value="Wyślij zamówienie">
+    </form>
+</body>
+</html>
