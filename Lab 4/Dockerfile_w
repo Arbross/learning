@@ -1,0 +1,18 @@
+# Używamy zadanej stabilnej wersji
+FROM ubuntu:24.04
+
+MAINTAINER Viktor Pavlovskyi <s101746@pollub.edu.pl>
+
+# Używamy tylko jednej warstry RUN do uruchomienia poniższych komend
+RUN apt-get update && \ 
+    apt-get upgrade -y && \
+    apt-get install -y apache2
+
+COPY index.html /var/www/html/
+
+# Jawnie mówimy jaki port będzie używany
+EXPOSE 80
+
+# Uruchomienie serwera Apache w tle
+ENTRYPOINT ["apache2ctl"]
+CMD ["-D", "FOREGROUND"]
