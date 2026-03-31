@@ -1,34 +1,37 @@
-## Laboratorium 5
-Aplikacja wykorzystuje język Go do generowania dynamicznych danych systemowych, które są następnie serwowane przez serwer Nginx.
+# Laboratorium 5
+W tym laboratorium wykonano zadanie z Reverse Proxy, gdzie serwer Nginx pośredniczy w komunikacji z aplikacją napisaną w języku Go.
 
-### Wymagania Projektowe
-Etap 1: Wykorzystanie obrazu bazowego z obsługą Go (na bazie Alpine) do wygenerowania pliku index.html.
+### Struktura projektu
+Etap 1: Wykorzystanie obrazu bazowego z obsługą Go (Alpine) do skompilowania kodu źródłowego serwera aplikacji.
 
-Dane: Pobranie adresu IP, nazwy hosta (hostname) oraz wersji aplikacji przekazanej przez ARG.
+Etap 2: Wykorzystanie obrazu Nginx jako serwera pośredniczącego (Reverse Proxy).
 
-Etap 2: Wykorzystanie obrazu Nginx do serwowania wygenerowanej strony.
+Dane: Dynamiczne pobieranie adresu IP, nazwy hosta (hostname) oraz wersji aplikacji przy każdym zapytaniu HTTP.
 
-Healthcheck: Implementacja mechanizmu sprawdzania poprawności działania kontenera.
+Healthcheck: Implementacja mechanizmu sprawdzania poprawności działania kontenera przy użyciu narzędzia curl.
 
-## Instrukcja Uruchomienia
+### Reverse Proxy
+Adres 172.17.0.1 to zazwyczaj brama sieci Docker. Adres 172.17.0.2 to zazwyczaj pierwszy uruchomiony kontener w danej sieci, natomiast adres 172.17.0.3 to aktualnie działający kontener. Wyświetlenie tego adresu potwierdza, że aplikacja Go poprawnie odczytuje interfejs sieciowy działającego kontenera, a Nginx prawidłowo przekazuje do niej ruch.
 
-### Budowanie obrazu
-Podczas budowy należy przekazać argument VERSION, aby zdefiniować wersję aplikacji:
+### Instrukcja Uruchomienia
+Budowanie obrazu
+Aby zbudować obraz i przekazać wersję aplikacji jako argument, należy wykonać:
 
- - docker build --build-arg VERSION=1.0.0 -t lab5-nginx-go .
- - docker run -d -p 8080:80 --name server lab5-nginx-go
+ - docker build --build-arg VERSION=1.5.0-proxy -t lab5-nginx-proxy .
+ - docker run -d -p 8080:80 --name moj-serwer-proxy lab5-nginx-proxy
 
-Weryfikacja: Poprawność działania można sprawdzić za pomocą komendy docker ps (status Health) lub bezpośrednio w przeglądarce:
+Po uruchomieniu można zweryfikować status kontenera oraz działanie usługi:
 
-Adres lokalny: http://localhost:8080
+ - docker ps
+ - curl http://localhost:8080
 
-### Struktura plików:
-
-- Dockerfile # Instrukcje budowania obrazu
-- main.go    # Skrypt generujący metadane w Go
-- README.md  # Dokumentacja (ten plik)
-- images/    # Folder z dokumentacją graficzną
+### Struktura plików
+ - Dockerfile # Instrukcje budowania obrazu
+ - main.go    # Serwer aplikacji w języku Go
+ - nginx.conf # Konfiguracja Nginx Reverse Proxy
+ - README.md  # Dokumentacja projektu
+ - images/    # Dokumentacja graficzna
     docker-setup.jpg
     dockerfile.jpg
     golang-script.jpg
-    web-link.jpg
+    nginx-conf.jpg
