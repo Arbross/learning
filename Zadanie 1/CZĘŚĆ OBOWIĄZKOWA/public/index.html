@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+  <div class="w-full max-w-sm">
+    <header class="text-center mb-8">
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-2">⛅ Weather</h1>
+    </header>
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-5">
+      <h2 class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-4">Select Location</h2>
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div>
+          <label for="country" class="block text-xs text-slate-400 font-medium mb-1.5">Country</label>
+          <select id="country" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-100 focus:border-blue-500 focus:outline-none">
+            <option value="">choose country</option>
+          </select>
+        </div>
+        <div>
+          <label for="city" class="block text-xs text-slate-400 font-medium mb-1.5">City</label>
+          <select id="city" disabled class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-100 focus:border-blue-500 focus:outline-none disabled:opacity-50 cursor-not-allowed">
+            <option value="">choose city</option>
+          </select>
+        </div>
+      </div>
+      <button id="getWeather" disabled class="w-full py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-semibold rounded-lg disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity">Get Weather</button>
+      <div id="error" class="hidden mt-3 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-xs"></div>
+    </div>
+    <div id="loading" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-6 text-center">
+      <div class="w-9 h-9 border-4 border-slate-700 border-t-blue-500 rounded-full animate-spin mx-auto mb-3"></div>
+      <p class="text-slate-400 text-sm">Fetching weather data…</p>
+    </div>
+    <div id="result" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-6">
+      <h2 class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-4">Current Conditions</h2>
+      <div class="flex items-baseline gap-2 mb-5">
+        <span id="r-city" class="text-2xl font-bold"></span>
+        <span id="r-country" class="text-sm text-slate-400"></span>
+      </div>
+      <div class="flex items-center gap-4 mb-5">
+        <div id="r-icon" class="text-5xl"></div>
+        <div>
+          <div class="text-4xl font-bold"><span id="r-temp"></span>°C</div>
+          <div class="text-slate-400 text-xs mt-1">Feels like <span id="r-feels"></span>°C</div>
+        </div>
+      </div>
+      <div id="r-condition" class="text-cyan-400 text-sm font-medium mb-5"></div>
+      <div class="grid grid-cols-2 gap-2 mb-4">
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-3">
+          <div class="text-xs uppercase tracking-wide text-slate-400 mb-1">Humidity <span>💧</span></div>
+          <div class="text-lg font-semibold"><span id="r-humidity"></span>%</div>
+        </div>
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-3">
+          <div class="text-xs uppercase tracking-wide text-slate-400 mb-1">Wind Speed <span>💨</span></div>
+          <div class="text-lg font-semibold"><span id="r-wind"></span> km/h</div>
+        </div>
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-3">
+          <div class="text-xs uppercase tracking-wide text-slate-400 mb-1">Precipitation <span>🌧</span></div>
+          <div class="text-lg font-semibold"><span id="r-rain"></span> mm</div>
+        </div>
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-3">
+          <div class="text-xs uppercase tracking-wide text-slate-400 mb-1">Pressure <span>🌡</span></div>
+          <div class="text-lg font-semibold"><span id="r-pressure"></span> hPa</div>
+        </div>
+      </div>
+      <div class="text-right text-xs text-slate-400 mt-4">Updated: <span id="r-time"></span></div>
+    </div>
+  </div>
+  <script>
+    const emoji=[['☀️','🌤️','☁️','🌫️','🌦️','🌧️','❄️','🌨️','⛈️'],[0,2,3,48,55,65,75,82,86]];
+    const[country,city,btn,loading,result,error]=[document.getElementById('country'),document.getElementById('city'),document.getElementById('getWeather'),document.getElementById('loading'),document.getElementById('result'),document.getElementById('error')];
+    fetch('/locations').then(r=>r.json()).then(l=>{
+      window.L=l;
+      Object.keys(l).sort().forEach(c=>country.appendChild(new Option(c,c)));
+    });
+    country.addEventListener('change',()=>{
+      const c=country.value;
+      city.innerHTML='<option value="">choose city</option>';
+      city.disabled=!c;
+      btn.disabled=true;
+      if(!c)return;
+      Object.keys(window.L[c]).sort().forEach(ci=>city.appendChild(new Option(ci,ci)));
+    });
+    city.addEventListener('change',()=>btn.disabled=!city.value);
+    btn.addEventListener('click',async()=>{
+      const c=country.value,ci=city.value;
+      if(!c||!ci)return;
+      result.style.display='none';
+      error.style.display='none';
+      loading.style.display='block';
+      btn.disabled=true;
+      try{
+        const res=await fetch(`/weather?country=${encodeURIComponent(c)}&city=${encodeURIComponent(ci)}`);
+        const data=await res.json();
+        if(!res.ok)throw new Error(data.error||'Unknown error');
+        const code=data.weatherCode;
+        const emojiIdx=emoji[1].findIndex(v=>code<=v);
+        document.getElementById('r-city').textContent=ci;
+        document.getElementById('r-country').textContent=c;
+        document.getElementById('r-icon').textContent=emoji[0][emojiIdx];
+        document.getElementById('r-temp').textContent=Math.round(data.temperature);
+        document.getElementById('r-feels').textContent=Math.round(data.feelsLike);
+        document.getElementById('r-condition').textContent=data.condition;
+        document.getElementById('r-humidity').textContent=data.humidity;
+        document.getElementById('r-wind').textContent=Math.round(data.windSpeed);
+        document.getElementById('r-rain').textContent=data.precipitation;
+        document.getElementById('r-pressure').textContent=Math.round(data.pressure);
+        document.getElementById('r-time').textContent=new Date(data.time).toLocaleString('en-GB',{timeZone:data.timezone});
+        result.style.display='block';
+      }catch(err){
+        error.textContent=err.message;
+        error.style.display='block';
+      }finally{
+        loading.style.display='none';
+        btn.disabled=false;
+      }
+    });
+  </script>
+</body>
+</html>
