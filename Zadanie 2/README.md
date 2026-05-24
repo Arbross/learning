@@ -14,7 +14,7 @@ W katalogu `.github/workflows/docker-build.yml` znajduje się zautomatyzowany ł
 | Trivy CVE Scan | Analiza podatności z blokadą przy `CRITICAL` / `HIGH` |
 | Build multi-platform | Budowa i push obrazów `linux/amd64` + `linux/arm64` do GHCR |
 
-### 6.2. Wymagane secrety (GitHub → Settings → Secrets and variables → Actions)
+### 6.2. Wymagane secrety
 
 | Nazwa | Opis |
 |-------|------|
@@ -23,9 +23,8 @@ W katalogu `.github/workflows/docker-build.yml` znajduje się zautomatyzowany ł
 
 Token do GHCR generowany jest automatycznie przez GitHub (`GITHUB_TOKEN`), dlatego nie wymaga dodatkowej konfiguracji.
 
-### 6.3. Sposób tagowania obrazów i cache
-
-#### Obraz aplikacji (GHCR)
+### 6.3. Sposób tagowania obrazów
+#### Obraz aplikacji
 
 - `latest` - zawsze wskazuje na ostatnią pomyślną wersję z gałęzi `main`. Jest wygodny w użyciu przy szybkich testach i lokalnym uruchamianiu, jednak nie jest zalecany w produkcji ze względu na mutable nature.
 - `sha-<short>` — tag immutable oparty na skróconym hashu commitu git. Gwarantuje unikalność oraz umożliwia jednoznaczną identyfikację wersji kodu zawartej w obrazie.
