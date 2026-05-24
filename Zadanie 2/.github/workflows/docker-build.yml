@@ -1,8 +1,8 @@
-name: Build, Scan and Push Docker Image
+name: Docker Image
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ docker ]
 
 env:
   REGISTRY: ghcr.io
