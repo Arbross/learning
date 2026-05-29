@@ -2,12 +2,11 @@ name: Docker Image
 
 on:
   push:
-    branches: [ docker ]
+    branches: [docker]
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  CACHE_REGISTRY: docker.io
 
 jobs:
   build-scan-push:
@@ -26,8 +25,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
-          version: v0.14.1
-          driver-opts: image=moby/buildkit:v0.14.1
+          version: v0.14.1 # starsza wersja narzędzia Buildx z powodu błędów na nowszych 
+          driver-opts: image=moby/buildkit:v0.14.1 # wersja silnika BuildKit, który steruje całym budowaniem
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -46,37 +45,39 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} # Pełna nazwa docelowa obrazu w rejestrze
+          tags: | # reguły tworzenia tagów
             type=raw,value=latest
             type=sha,prefix=,format=short
 
-      - name: Build image for scan (linux/amd64)
+      - name: Build image for scan
         env:
           DOCKER_BUILDKIT: 1
         run: |
           docker build \
-            --tag weather-app:scan \
-            --file "Zadanie 1/CZĘŚĆ NIEOBOWIĄZKOWA/Dockerfile" \
+            -t weather-app:scan \
+            -f "Zadanie 1/CZĘŚĆ NIEOBOWIĄZKOWA/Dockerfile" \
             "Zadanie 1/CZĘŚĆ NIEOBOWIĄZKOWA"
 
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'weather-app:scan'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
+          image-ref: 'weather-app:scan' # lokalny obraz, który mamy przeskanować
+          format: 'table' # wyprowadzamy wyniki w ładnej, czytelnej tabeli w logach
+          exit-code: '1' # luki -> zwracamy błąd i zatrzymujemy cały proces
+          ignore-unfixed: true # ignorujemy błędy, na które twórcy nie wydali jeszcze poprawki
           severity: 'CRITICAL,HIGH'
 
-      - name: Build and push multi-platform image
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: "Zadanie 1/CZĘŚĆ NIEOBOWIĄZKOWA"
           file: "Zadanie 1/CZĘŚĆ NIEOBOWIĄZKOWA/Dockerfile"
           platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          push: true # po zbudowaniu wysyłamy gotowy obraz do Docker Hub
+          tags: ${{ steps.meta.outputs.tags }} # przekazanie tagów wygenerowanych wyżej przez krok "meta"
           labels: ${{ steps.meta.outputs.labels }}
+          # wskazuje skąd pobrać pamięć podręczną z DockerHuba, żeby nie budować warstw od zera
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/weather-app-cache:buildcache
+          # wskazuje miejsce gdzie zapisać nowy cache. "mode=max" zapisuje absolutnie wszystko, co się da, dla maksymalnego przyspieszenia
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/weather-app-cache:buildcache,mode=max
