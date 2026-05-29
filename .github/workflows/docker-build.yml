@@ -71,7 +71,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: "Zadanie 1/CZĘŚĆ NIEOBOWIĄZKOWA"
-          file: "./Zadanie 1/CZĘŚĆ NIEOBOWIĄZKOWA/Dockerfile"
+          file: "Zadanie 1/CZĘŚĆ NIEOBOWIĄZKOWA/Dockerfile"
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
