@@ -9,17 +9,17 @@ Dockerfile           # Definicja wieloetapowego obrazu
 go.mod               # Moduł Go
 main.go              # Kod źródłowy serwera HTTP
 public/
-  index.html       # Strona frontendowa (embed w Go)
+  index.html         # Strona frontendowa
 images/              # Zrzuty ekranu / zasoby graficzne
 README.md
 ```
 
 ## 3. Funkcjonalności aplikacji
 
-- **Strona główna (`/`)** — zwraca osadzony plik `index.html`.
-- **Pogoda (`/weather?country=<kraj>&city=<miasto>`)** — zwraca dane pogodowe w formacie JSON (temperatura, wilgotność, wiatr, ciśnienie, opady, opis pogody, strefa czasowa).
-- **Lokalizacje (`/locations`)** — lista dostępnych krajów i miast.
-- **Healthcheck (`/health`)** — punkt kontrolny zdrowia aplikacji, wykorzystywany w `HEALTHCHECK` Dockerfile.
+- **Strona główna (`/`)** - zwraca osadzony plik `index.html`.
+- **Pogoda (`/weather?country=<kraj>&city=<miasto>`)** - zwraca dane pogodowe w formacie JSON (temperatura, wilgotność, wiatr, ciśnienie, opady, opis pogody, strefa czasowa).
+- **Lokalizacje (`/locations`)** - lista dostępnych krajów i miast.
+- **Healthcheck (`/health`)** - punkt kontrolny zdrowia aplikacji, wykorzystywany w `HEALTHCHECK` Dockerfile.
 
 Dostępne lokalizacje:
 - **Poland**: Warsaw, Lublin, Gdansk
@@ -31,14 +31,12 @@ Dostępne lokalizacje:
 
 ## 4. Wymagania przed budową
 
-1. Zainstalowany i uruchomiony **Docker Desktop** lub Docker Engine z włączonym BuildKit.
+1. Zainstalowany i uruchomiony **Docker** z włączonym BuildKit.
 2. Zainstalowany i skonfigurowany **Docker Buildx**.
-3. Dane logowania do rejestru (np. Docker Hub), jeśli planujesz wysłać obraz (`--push`).
-4. (Opcjonalnie) Plik `github_token.txt` w katalogu głównym, jeśli chcesz wykorzystać sekret podczas budowania.
+3. Dane logowania do Docker Hub.
+4. Plik `github_token.txt` w katalogu głównym.
 
 ## 5. Instrukcja budowania (Część Nieobowiązkowa)
-
-Poniższe kroki realizują nowoczesny pipeline budowania obrazu Docker z wykorzystaniem Buildx.
 
 ### 5.1. Utworzenie i aktywacja buildera
 
@@ -46,8 +44,6 @@ Poniższe kroki realizują nowoczesny pipeline budowania obrazu Docker z wykorzy
 docker buildx create --name my-cloud-builder --driver docker-container --use
 docker buildx inspect --bootstrap
 ```
-
-> Builder `my-cloud-builder` działa w kontenerze, co umożliwia budowanie dla wielu architektur równolegle.
 
 ### 5.2. Budowanie obrazu multi-platform i push do rejestru
 
@@ -63,11 +59,11 @@ docker buildx build \
 ```
 
 **Wyjaśnienie flag:**
-- `--platform linux/amd64,linux/arm64` — budowanie obrazów dla dwóch architektur.
-- `--secret id=github_token,src=github_token.txt` — bezpieczne przekazanie sekretu do buildu bez zapisywania go w warstwach obrazu.
-- `-t arbross/weather-app:latest` — tag obrazu w rejestrze Docker Hub (zmień `arbross` na swoją nazwę użytkownika).
-- `--cache-to / --cache-from` — wykorzystanie rejestru jako zewnętrznego cache'u dla przyspieszenia kolejnych budowań.
-- `--push` — automatyczne wypchnięcie gotowego obrazu do rejestru.
+- `--platform linux/amd64,linux/arm64` - budowanie obrazów dla dwóch architektur.
+- `--secret id=github_token,src=github_token.txt` - bezpieczne przekazanie sekretu do buildu bez zapisywania go w warstwach obrazu.
+- `-t arbross/weather-app:latest` - tag obrazu w rejestrze Docker Hub.
+- `--cache-to / --cache-from` - wykorzystanie rejestru jako zewnętrznego cache'u dla przyspieszenia kolejnych budowań.
+- `--push` - automatyczne wypchnięcie gotowego obrazu do rejestru.
 
 ### 5.3. Weryfikacja obrazu w rejestrze
 
@@ -75,19 +71,13 @@ docker buildx build \
 docker buildx imagetools inspect arbross/weather-app:latest
 ```
 
-Polecenie wyświetli metadane obrazu, w tym listę wspieranych platform (manifest list).
-
-### 5.4. Skanowanie podatności (Docker Scout)
+### 5.4. Skanowanie podatności
 
 ```bash
 docker scout cves arbross/weather-app:latest
 ```
 
-Narzędzie przeanalizuje warstwy obrazu i wskaże potencjalne luki bezpieczeństwa (CVE).
-
 ## Lokalne uruchomienie obrazu
-
-Jeśli chcesz uruchomić gotowy obraz lokalnie (dla architektury hosta):
 
 ```bash
 docker run -d \
@@ -100,14 +90,12 @@ docker run -d \
 
 Aplikacja będzie dostępna pod adresem: [http://localhost:3000](http://localhost:3000)
 
-Punkt zdrowia: [http://localhost:3000/health](http://localhost:3000/health)
+Healthcheck: [http://localhost:3000/health](http://localhost:3000/health)
 
 ## Szczegóły Dockerfile
 
-Obraz składa się z dwóch etapów:
-
 1. **Etap `builder`:**
-   - Bazuje na `golang:1.26.3-alpine` (platforma hosta dla szybszej kompilacji krzyżowej).
+   - Bazuje na `golang:1.26.3-alpine`.
    - Instaluje `upx` i `git`.
    - Wykorzystuje `RUN --mount=type=secret` do załadowania tokena bez pozostawiania śladów w historii obrazu.
    - Używa `RUN --mount=type=cache` dla przyspieszenia `go mod download` i kompilacji.
@@ -115,7 +103,7 @@ Obraz składa się z dwóch etapów:
    - Kompresuje wynikowy plik za pomocą `upx --best --lzma`.
 
 2. **Etap finalny (`scratch`):**
-   - Całkowicie pusty obraz bazowy — brak zbędnych narzędzi i bibliotek.
+   - Całkowicie pusty obraz bazowy. Brak zbędnych narzędzi i bibliotek.
    - Zawiera wyłącznie skompresowany plik wykonywalny ze stadium build.
    - Eksponuje port **3000**.
    - Ustawia zmienne środowiskowe `AUTHOR` i `PORT`.
