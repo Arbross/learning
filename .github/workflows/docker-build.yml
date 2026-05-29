@@ -53,7 +53,7 @@ jobs:
       - name: Build image for scan (linux/amd64)
         uses: docker/build-push-action@v5
         with:
-          context: ./Zadanie 1/CZĘŚĆ NIEOBOWIĄZKOWA
+          context: "Zadanie 1/CZĘŚĆ NIEOBOWIĄZKOWA"
           load: true
           platforms: linux/amd64
           tags: weather-app:scan
@@ -71,7 +71,7 @@ jobs:
       - name: Build and push multi-platform image
         uses: docker/build-push-action@v5
         with:
-          context: ./Zadanie 1/CZĘŚĆ NIEOBOWIĄZKOWA
+          context: "Zadanie 1/CZĘŚĆ NIEOBOWIĄZKOWA"
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
