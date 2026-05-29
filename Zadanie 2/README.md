@@ -1,6 +1,6 @@
 ## Zadanie 2 - GitHub Actions Pipeline
 
-Cały kod aplikacji znajduje się w katalogu **Zadanie 1** (wraz z Dockerfile). Tutaj opisany jest pipeline CI/CD, który automatycznie buduje obraz, skanuje go pod kątem podatności i wysyła do GitHub Container Registry (GHCR).
+Cały kod aplikacji znajduje się w katalogu **Zadanie 1** (wraz z Dockerfile), a pipeline znajduje się w głównym katalogu repozytorium. Tutaj opisany jest pipeline CI/CD, który automatycznie buduje obraz, skanuje go pod kątem podatności i wysyła do GHCR.
 
 ### Co robi workflow?
 
@@ -40,4 +40,5 @@ Cache jest przechowywany jako osobne repozytorium na DockerHub: `weather-app-cac
 
 Wybrałem **Trivy**, bo działa od razu, wystarczy dodać akcję `aquasecurity/trivy-action` i gotowe. Nie wymaga subskrypcji Docker Pro ani konfiguracji organizacji w DockerHub. Trivy potrafi zwrócić kod błędu, gdy znajdzie krytyczne lub wysokie zagrożenia, co automatycznie blokuje push do rejestru.
 
-[Adres URL na zbudowany obraz (Docker Hub)](https://hub.docker.com/r/arbross/weather-app-cache)
+[Adres URL na GHCR (GitHub)](https://github.com/Arbross/learning/pkgs/container/learning)
+[Adres URL na cache (Docker Hub)](https://hub.docker.com/r/arbross/weather-app-cache)
