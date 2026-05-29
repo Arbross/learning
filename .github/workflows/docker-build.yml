@@ -26,6 +26,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
+          install: true
           driver-opts: image=moby/buildkit:v0.14.1
           buildkitd-flags: --debug
 
@@ -60,7 +61,7 @@ jobs:
           platforms: linux/amd64
           tags: weather-app:scan
           provenance: false
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/weather-app-cache:buildcache
+          sbom: false
 
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@master
