@@ -50,7 +50,7 @@ jobs:
 
       - name: Build image for scan (linux/amd64)
         env:
-          DOCKER_BUILDKIT: 0
+          DOCKER_BUILDKIT: 1
         run: |
           docker build \
             --tag weather-app:scan \
