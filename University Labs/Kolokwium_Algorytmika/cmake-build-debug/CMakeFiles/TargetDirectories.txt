@@ -1,3 +1,0 @@
-/Users/admin/CLionProjects/Kolokwium_Algorytmika/cmake-build-debug/CMakeFiles/Kolokwium_Algorytmika.dir
-/Users/admin/CLionProjects/Kolokwium_Algorytmika/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/admin/CLionProjects/Kolokwium_Algorytmika/cmake-build-debug/CMakeFiles/rebuild_cache.dir

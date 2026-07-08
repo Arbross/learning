@@ -1,3 +1,0 @@
-/Users/admin/CLionProjects/Lab_6_Karp_Rabin/cmake-build-debug/CMakeFiles/Lab_6_Karp_Rabin.dir
-/Users/admin/CLionProjects/Lab_6_Karp_Rabin/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/admin/CLionProjects/Lab_6_Karp_Rabin/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,3 +1,0 @@
-/Users/admin/CLionProjects/UrzadzenieElektryczne/cmake-build-debug/CMakeFiles/UrzadzenieElektryczne.dir
-/Users/admin/CLionProjects/UrzadzenieElektryczne/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/admin/CLionProjects/UrzadzenieElektryczne/cmake-build-debug/CMakeFiles/rebuild_cache.dir

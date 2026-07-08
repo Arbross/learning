@@ -1,1 +1,0 @@
-CMakeLists.txt not found in /Users/admin/CLionProjects/Lab8_Alg Select CMakeLists.txt
